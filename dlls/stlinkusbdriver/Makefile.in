@@ -1,0 +1,6 @@
+MODULE    = stlinkusbdriver.dll
+EXTRALIBS = @USBLIBS@
+
+C_SRCS = \
+	STLinkUSBDriver_main.c
+
