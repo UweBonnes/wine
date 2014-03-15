@@ -1,0 +1,7 @@
+# Generated from ../../../drive_c/windows/system32/USBFunctions.dll by winedump.
+MODULE    = usbfunctions.dll
+EXTRALIBS = @USBLIBS@
+
+C_SRCS = \
+       usbfunctions_main.c
+
