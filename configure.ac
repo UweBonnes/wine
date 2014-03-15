@@ -74,6 +74,7 @@ AC_ARG_WITH(pthread,   AS_HELP_STRING([--without-pthread],[do not use the pthrea
             [if test "x$withval" = "xno"; then ac_cv_header_pthread_h=no; fi])
 AC_ARG_WITH(sane,      AS_HELP_STRING([--without-sane],[do not use SANE (scanner support)]))
 AC_ARG_WITH(tiff,      AS_HELP_STRING([--without-tiff],[do not use TIFF]))
+AC_ARG_WITH(usb,       AS_HELP_STRING([--without-usb],[do not use USB]))
 AC_ARG_WITH(v4l,       AS_HELP_STRING([--without-v4l],[do not use v4l1 (v4l support)]))
 AC_ARG_WITH(xcomposite,AS_HELP_STRING([--without-xcomposite],[do not use the Xcomposite extension]),
             [if test "x$withval" = "xno"; then ac_cv_header_X11_extensions_Xcomposite_h=no; fi])
@@ -1406,6 +1407,34 @@ then
 fi
 WINE_NOTICE_WITH(sane,[test "x$ac_cv_lib_soname_sane" = "x"],
                  [libsane ${notice_platform}development files not found, scanners won't be supported.])
+
+dnl **** Check for LIBUSB ****
+AC_SUBST(USBLIBS,"")
+AC_SUBST(USBINCL,"")
+if test "x$with_usb" != "xno"
+then
+    AC_CHECK_HEADERS([usb.h],
+        AC_CHECK_LIB(usb, usb_init,
+            [AC_DEFINE(HAVE_LIBUSB, 1, [Define if you have the libusb library and header])
+             USBLIBS="-lusb"]))
+    ac_save_CPPFLAGS="$CPPFLAGS"
+    if test "$PKG_CONFIG" != "false"
+    then
+        ac_usb_incl="`$PKG_CONFIG --cflags libusb-1.0`"
+        ac_usb_libs="`$PKG_CONFIG --libs libusb-1.0`"
+        CPPFLAGS="$ac_usb_incl $CPPFLAGS"
+    fi
+    AC_CHECK_HEADERS([libusb.h],
+        AC_CHECK_LIB(usb-1.0, libusb_init,
+            [AC_DEFINE(HAVE_LIBUSB, 1, [Define if you have the libusb library and header])
+             USBLIBS="$ac_usb_libs"
+             USBINCL="$ac_usb_incl"]))
+    CPPFLAGS="$ac_save_CPPFLAGS"
+fi
+WINE_NOTICE_WITH(usb,[test "x$ac_cv_lib_usb_usb_init" != "xyes" -a "x$ac_cv_lib_usb_1_0_libusb_init" != "xyes"],
+                 [libusb ${notice_platform}development files not found, USB won't be supported.])
+
+
 
 dnl **** Check for libv4l1 ****
 if test "x$with_v4l" != "xno"
