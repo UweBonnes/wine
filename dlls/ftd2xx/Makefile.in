@@ -1,0 +1,4 @@
+MODULE    = ftd2xx.dll
+
+C_SRCS = \
+	ftd2xx_main.c
