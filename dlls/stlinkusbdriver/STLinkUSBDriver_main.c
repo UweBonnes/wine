@@ -1,9 +1,6 @@
 /*
  * STLinkUSBDriver.dll
  *
- * Generated from STLinkUSBDriver.dll by winedump.
- *
- * DO NOT SUBMIT GENERATED DLLS FOR INCLUSION INTO WINE!
  *
  */
 
@@ -447,4 +444,73 @@ DWORD __stdcall STLINKUSBDRIVER_STMass_Enum_Reenumerate(void)
 {
     TRACE("\n");
     return STLINK_OK;
+}
+
+/******************************************************************
+ *		STLink_Reenumerate (STLINKUSBDRIVER.)
+ *
+ *
+ */
+DWORD __stdcall STLINKUSBDRIVER_STLink_Reenumerate(DWORD ifc, DWORD clear)
+{
+    TRACE("\n");
+    return STLINK_OK;
+}
+
+/******************************************************************
+ *		STLink_GetNbDevices (STLINKUSBDRIVER.)
+ *
+ *
+ */
+DWORD __stdcall STLINKUSBDRIVER_STLink_GetNbDevices(DWORD ifc)
+{
+    TRACE("\n");
+    return STLINKUSBDRIVER_STMass_Enum_GetNbDevices();
+}
+
+/******************************************************************
+ *		STLink_GetDeviceInfo (STLINKUSBDRIVER.)
+ *
+ *
+ */
+DWORD __stdcall STLINKUSBDRIVER_STLink_GetDeviceInfo(
+    DWORD ifc, BYTE idx, void* ptr, DWORD size)
+{
+    TRACE("\n");
+    return STLINK_OK;
+}
+
+/******************************************************************
+ *		STLink_OpenDevice (STLINKUSBDRIVER.)
+ *
+ *
+ */
+DWORD __stdcall STLINKUSBDRIVER_STLink_OpenDevice(
+    DWORD ifc, BYTE idx, BYTE access , DWORD *handle)
+{
+    TRACE("\n");
+    return STLINKUSBDRIVER_STMass_OpenDevice(idx, handle);
+}
+
+/******************************************************************
+ *		STLink_CloseDevice (STLINKUSBDRIVER.)
+ *
+ *
+ */
+DWORD __stdcall STLINKUSBDRIVER_STLink_CloseDevice(DWORD handle)
+{
+    TRACE("\n");
+    return STLINKUSBDRIVER_STMass_CloseDevice(0, handle);
+}
+
+/******************************************************************
+ *		STLink_SendCommand (STLINKUSBDRIVER.)
+ *
+ *
+ */
+DWORD __stdcall STLINKUSBDRIVER_STLink_SendCommand(
+    DWORD handle, PDeviceRequest req, DWORD to)
+{
+    TRACE("\n");
+    return STLINKUSBDRIVER_STMass_SendCommand(handle, 0, req, to);
 }
