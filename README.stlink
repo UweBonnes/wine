@@ -1,0 +1,6 @@
+When compiling from git and adding a new dll, as indicated in the
+wine developpers guide, do:
+
+ autoconf
+ autoheader
+ ./configure

@@ -22,6 +22,7 @@
 #define STLINK_OK 1
 #define STLINK_ERROR 4
 #define STLINK_FAILED 0xe4
+#define STLINK_BAD_PARAMETER 0x1002
 
 #define  DEFAULT_SENSE_LEN  14
 

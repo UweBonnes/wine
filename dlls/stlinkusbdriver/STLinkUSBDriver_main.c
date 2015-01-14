@@ -17,10 +17,18 @@ WINE_DEFAULT_DEBUG_CHANNEL(stlink);
 #ifdef HAVE_LIBUSB_H
 #include <libusb-1.0/libusb.h>
 static libusb_context* libusb_ctx = NULL;
+typedef struct _StLinkDeviceInfo{
+    char path[MAX_PATH];
+    char serial[32];
+    uint16_t vid;
+    uint16_t pid;
+    unsigned char used;
+}StLinkDeviceInfo;
 typedef struct {
     int type;
     libusb_device *dev;
     libusb_device_handle *handle;
+    StLinkDeviceInfo info;
 } Tstlink_dev, *Pstlink_dev;
 static  Tstlink_dev *stlink_dev = NULL;
 static struct libusb_transfer* req_trans = NULL;
@@ -245,6 +253,7 @@ DWORD __stdcall STLINKUSBDRIVER_STMass_Enum_GetNbDevices(void)
                     TRACE("Releasing idx %d\n", j);
                     libusb_release_interface( stlink_dev[j].handle, 1);
                     libusb_close(stlink_dev[j].handle);
+                    stlink_dev[j].handle = NULL;
                 }
             }
             HeapFree(GetProcessHeap(), 0, stlink_dev);
@@ -263,16 +272,27 @@ DWORD __stdcall STLINKUSBDRIVER_STMass_Enum_GetNbDevices(void)
                 case USB_STLINK_PID:
                     stlink_dev[idx].dev = dev;
                     stlink_dev[idx].type = STLINK_V1;
+                    strcpy(stlink_dev[idx].info.serial,"1234");
                     idx++;
                     break;
                 case USB_STLINK_32L_PID:
                     stlink_dev[idx].dev = dev;
                     stlink_dev[idx].type = STLINK_V2;
-                    idx++;
+                    strcpy(stlink_dev[idx].info.path,"bla1");
+                    strcpy(stlink_dev[idx].info.serial,"1235");
+                    stlink_dev[idx].info.vid = USB_ST_VID;
+                    stlink_dev[idx].info.pid = USB_STLINK_32L_PID;
+                    stlink_dev[idx].info.used = 0;
+                   idx++;
                     break;
                 case USB_STLINK_V21_PID:
                     stlink_dev[idx].dev = dev;
                     stlink_dev[idx].type = STLINK_V21;
+                    strcpy(stlink_dev[idx].info.path,"bla");
+                    strcpy(stlink_dev[idx].info.serial,"1236");
+                    stlink_dev[idx].info.vid = USB_ST_VID;
+                    stlink_dev[idx].info.pid = USB_STLINK_V21_PID;
+                    stlink_dev[idx].info.used = 0;
                     idx++;
                     break;
                 }
@@ -474,9 +494,11 @@ DWORD __stdcall STLINKUSBDRIVER_STLink_GetNbDevices(DWORD ifc)
  *
  */
 DWORD __stdcall STLINKUSBDRIVER_STLink_GetDeviceInfo(
-    DWORD ifc, BYTE idx, void* ptr, DWORD size)
+    DWORD ifc, BYTE idx, StLinkDeviceInfo* info, DWORD size)
 {
-    TRACE("\n");
+    if (NULL == info)
+        return STLINK_BAD_PARAMETER;
+    memcpy(info, &stlink_dev[idx].info, size);
     return STLINK_OK;
 }
 
