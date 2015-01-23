@@ -2074,6 +2074,7 @@ AC_CHECK_FUNCS(\
 	dlopen \
 	epoll_create \
 	ffs \
+	finitef \
 	fnmatch \
 	fork \
 	fpclass \
@@ -2090,6 +2091,7 @@ AC_CHECK_FUNCS(\
 	gettimeofday \
 	getuid \
 	if_nameindex \
+	isnanf \
 	kqueue \
 	lstat \
 	memmove \
