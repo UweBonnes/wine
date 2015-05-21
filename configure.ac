@@ -2619,6 +2619,8 @@ fi
 AC_CHECK_FUNCS(\
 	cbrt \
 	cbrtf \
+	erf \
+	erff \
 	exp2 \
 	exp2f \
 	llrint \
