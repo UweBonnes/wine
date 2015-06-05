@@ -425,6 +425,7 @@ AC_CHECK_HEADERS(\
 	lber.h \
 	ldap.h \
 	libproc.h \
+	libunwind.h \
 	link.h \
 	linux/cdrom.h \
 	linux/compiler.h \
